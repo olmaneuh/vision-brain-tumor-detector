@@ -35,12 +35,9 @@ if uploaded_file:
     # display the uploaded image
     st.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write('\nClassifying...')
-
-    # preprocess the image file to load in the model for classification
-    image = image_classifier.preprocess_image(image)
-
+    
     # classify the uploaded image
-    inference = image_classifier.predict(image)
+    inference = image_classifier.inference(image)
 
     # print the classification label
     if inference == 0:
