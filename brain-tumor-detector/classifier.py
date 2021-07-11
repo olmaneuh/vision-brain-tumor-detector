@@ -22,25 +22,28 @@ class ImageClassifier:
     TODO
     '''
 
-    def __init__(self, image_shape=(224, 224, 3), image_size=(224, 224)):
+    def __init__(self, model='./model.h5', image_size=(224, 224)):
         '''
         TODO
         '''
-        self.model = keras.models.load_model('../model/model.h5')
-        self.image_shape = image_shape
+        self.model = keras.models.load_model(model)
         self.image_size = image_size
 
-    def preprocess_image(self, image):
+    def process_image(self, image):
         '''
         TODO
         '''
-        image = ImageOps.fit(image, self.size, Image.ANTIALIAS)
+        image = image.convert('RGB')
+        image = ImageOps.fit(image, self.image_size, Image.ANTIALIAS)
         image = np.asarray(image)
         image = (image.astype(np.float32) / 127.0) - 1
+        image = np.expand_dims(image, axis=0)
         return image
 
-    def predict(self, image):
+    def inference(self, image):
         '''
         TODO
         '''
-        return None
+        image = self.process_image(image)
+        inference = self.model.predict(image)
+        return np.argmax(inference)
