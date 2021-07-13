@@ -18,32 +18,48 @@ import numpy as np
 from PIL import Image, ImageOps
 
 class ImageClassifier:
-    '''
-    TODO
-    '''
+    """
+    Helper class to pre-process and classify images.
+    """
 
     def __init__(self, model='./model.h5', image_size=(224, 224)):
-        '''
-        TODO
-        '''
+        """
+        Loads the model and the images size values.
+
+        Args:
+            model (str, optional): [description]. Defaults to './model.h5'.
+            image_size (tuple, optional): [description]. Defaults to (224, 224).
+        """
         self.model = keras.models.load_model(model)
         self.image_size = image_size
 
     def process_image(self, image):
-        '''
-        TODO
-        '''
+        """
+        Prepare the image so that it can be classified correctly by the model.
+
+        Args:
+            image (PIL.Image.Image): Image to pre-process.
+
+        Returns:
+            image (np.ndarray): Processed Image.
+        """
         image = image.convert('RGB')
         image = ImageOps.fit(image, self.image_size, Image.ANTIALIAS)
         image = np.asarray(image)
-        image = (image.astype(np.float32) / 127.0) - 1
+        image = (image.astype(np.float32) / 127.0) - 1  # normalize the data to be in [-1, 1] range.
         image = np.expand_dims(image, axis=0)
         return image
 
     def inference(self, image):
-        '''
-        TODO
-        '''
+        """
+        Generates an inference based on the input image.
+
+        Args:
+            image (PIL.Image.Image): Image to classify.
+
+        Returns:
+            index_array : ndarray of ints.
+        """
         image = self.process_image(image)
         inference = self.model.predict(image)
         return np.argmax(inference)
