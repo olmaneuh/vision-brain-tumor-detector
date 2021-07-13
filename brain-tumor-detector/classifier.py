@@ -12,10 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import keras
 import numpy as np
+import tensorflow as tf
 
 from PIL import Image, ImageOps
+from tensorflow import keras
 
 class ImageClassifier:
     """
@@ -30,7 +31,7 @@ class ImageClassifier:
             model (str, optional): [description]. Defaults to './model.h5'.
             image_size (tuple, optional): [description]. Defaults to (224, 224).
         """
-        self.model = keras.models.load_model(model)
+        self.model = tf.keras.models.load_model(model)
         self.image_size = image_size
 
     def process_image(self, image):
